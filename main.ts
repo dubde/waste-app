@@ -21,6 +21,7 @@ function createWindow(): BrowserWindow {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
     },
+    backgroundColor: '#303030',
     frame: false
   });
 

@@ -4,16 +4,10 @@
   </button>
   <span>Waste: the Web.config utility</span>
   <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon" aria-label="minimize to tray Application button"
-    (click)="onMinimizeButton()">
-    <mat-icon>minimize</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Maximize/Minize Application button"
-    (click)="onExpandButton()">
-    <mat-icon>expand_less</mat-icon>
-  </button>
   <button mat-icon-button class="example-icon" aria-label="Close Application button" (click)="onCloseButton()">
     <mat-icon>clear</mat-icon>
   </button>
 </mat-toolbar>
-<router-outlet></router-outlet>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>

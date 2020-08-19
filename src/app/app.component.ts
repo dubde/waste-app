@@ -28,6 +28,7 @@ export class AppComponent {
     }
   }
 
+
   onMinimizeButton(): void {
     const appWindow = this.electronService.remote.getCurrentWindow();
     appWindow.minimize();

@@ -20,6 +20,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { HomeModule } from './home/home.module';
 import { DetailModule } from './detail/detail.module';
@@ -41,7 +45,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CoreModule,
     SharedModule,
     HomeModule,
-    MatToolbarModule, MatButtonModule, MatSidenavModule,
+    MatToolbarModule, MatButtonModule, MatSidenavModule, MatSnackBarModule, MatProgressBarModule, MatFormFieldModule, MatExpansionModule,
     MatIconModule,
     DetailModule,
     AppRoutingModule,
