@@ -11,6 +11,8 @@ export class HomeComponent implements OnInit {
 
   private xmlDoc: Document;
   requestedNodes: Element[];
+  allOtherNodes: Element[];
+  panelOpenState: boolean;
 
   constructor(private router: Router) { }
 
@@ -36,7 +38,7 @@ export class HomeComponent implements OnInit {
     this.xmlDoc = parser.parseFromString(file, 'text/xml');
 
     this.requestedNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key')));
-
+    this.allOtherNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => !requestedKeys.includes(e.getAttribute('key')));
     const webconfig = serializer.serializeToString(this.xmlDoc);
 
     //  fs.writeFileSync(path + 'Web.config.test', webconfig);
