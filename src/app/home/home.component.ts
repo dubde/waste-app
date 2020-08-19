@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as xmlParser from 'fast-xml-parser';
 import * as fs from 'fs';
 
 @Component({
@@ -10,44 +9,41 @@ import * as fs from 'fs';
 })
 export class HomeComponent implements OnInit {
 
-  private parsedFile;
+  private xmlDoc: Document;
+  requestedNodes: Element[];
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    const requestedKeys = [
+      'DevelopmentUserLogin',
+      'IsInDevelopment'
+    ];
 
-  loadXmlFile() {
-    const options = {
-      attributeNamePrefix: "@_",
-      attrNodeName: "attr", //default is 'false'
-      textNodeName: "#text",
-      ignoreAttributes: true,
-      ignoreNameSpace: false,
-      allowBooleanAttributes: false,
-      parseNodeValue: true,
-      parseAttributeValue: false,
-      trimValues: true,
-      cdataTagName: "__cdata", //default is 'false'
-      cdataPositionChar: "\\c",
-      parseTrueNumberOnly: false,
-      arrayMode: false, //"strict"
-      stopNodes: ["parse-me-as-string"]
-    };
     const parser = new DOMParser();
     const serializer = new XMLSerializer();
     const path = 'C:/inetpub/wwwroot/tcpdevlocal/Website/'
-    const file = fs.readFileSync(path + 'Web.config', 'utf8');
-    const xmlDoc = parser.parseFromString(file, 'text/xml');
+    // const file = fs.readFileSync(path + 'Web.config', 'utf8');
+    const file = `
+    <appSettings>
+      <add key="DevelopmentUserLogin" value="DEFENDERI0061@yopmail.com" />
+      <add key="IsInDevelopment" value="true" />
+      <add key="" value="" />
+      <add key="Touchdashboard-Login" value="https://bupadev-qa-a.apigee.net/forgerock/oauth/v1/login" />
+      <add key="Touchdashboard-Authentication" value="https://bupadev-qa-a.apigee.net/forgerock/oauth/v1/user/{0}/passcode?consumerId={1}" />
+    </appSettings>
+    `;
+    this.xmlDoc = parser.parseFromString(file, 'text/xml');
 
-    const loginElement = Object.values(xmlDoc.getElementsByTagName('add')).filter(e => e.getAttribute('key') === 'DevelopmentUserLogin')[0];
+    this.requestedNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key')));
 
-    loginElement.setAttribute('value', 'CopperA0055@yopmail.com');
+    const webconfig = serializer.serializeToString(this.xmlDoc);
 
-    const webconfig = serializer.serializeToString(xmlDoc);
+    //  fs.writeFileSync(path + 'Web.config.test', webconfig);
 
-    fs.writeFileSync(path + 'Web.config.test', webconfig);
+  }
 
-    return Object.values(xmlDoc.getElementsByTagName('add')).filter(e => e.getAttribute('key') === 'DevelopmentUserLogin')[0].getAttribute('value') + webconfig;
+  loadXmlFile(): void {
   }
 
   writeXmlFile(): void {

@@ -14,8 +14,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { HomeModule } from './home/home.module';
+import { DetailModule } from './detail/detail.module';
+
+import { AppComponent } from './app.component';
+
+
 // Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,11 +31,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
-
-import { HomeModule } from './home/home.module';
-import { DetailModule } from './detail/detail.module';
-
-import { AppComponent } from './app.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -39,14 +41,21 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatSnackBarModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatExpansionModule,
+    MatIconModule,
     CoreModule,
     SharedModule,
     HomeModule,
-    MatToolbarModule, MatButtonModule, MatSidenavModule, MatSnackBarModule, MatProgressBarModule, MatFormFieldModule, MatExpansionModule,
-    MatIconModule,
     DetailModule,
     AppRoutingModule,
     TranslateModule.forRoot({

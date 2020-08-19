@@ -6,8 +6,9 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { SharedModule } from '../shared/shared.module';
 
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [HomeComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule]
+  imports: [CommonModule, SharedModule, HomeRoutingModule, MatCardModule]
 })
-export class HomeModule {}
+export class HomeModule { }
