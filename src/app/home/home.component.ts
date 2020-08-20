@@ -31,8 +31,8 @@ export class HomeComponent implements OnInit {
       <add key="DevelopmentUserLogin" value="DEFENDERI0061@yopmail.com" />
       <add key="IsInDevelopment" value="true" />
       <add key="" value="" />
-      <add key="Touchdashboard-Login" value="https://bupadev-qa-a.apigee.net/forgerock/oauth/v1/login" />
-      <add key="Touchdashboard-Authentication" value="https://bupadev-qa-a.apigee.net/forgerock/oauth/v1/user/{0}/passcode?consumerId={1}" />
+      <add key="Login" value="https://subdomain.apigee.net/forgerock/oauth/v1/login" />
+      <add key="Authentication" value="https://subdomain.apigee.net/forgerock/oauth/v1/user/{0}/passcode?consumerId={1}" />
     </appSettings>
     `;
     this.xmlDoc = parser.parseFromString(file, 'text/xml');
