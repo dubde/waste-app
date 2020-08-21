@@ -34,6 +34,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { PresetsModule } from './presets/presets.module';
+import { StorageModule } from './storage/storage.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -70,7 +71,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
         deps: [HttpClient]
       }
     }),
-    PresetsModule
+    PresetsModule,
+    StorageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

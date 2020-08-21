@@ -1,36 +1,38 @@
 export class PresetExamples {
-  static readonly development = `
-  <?xml version="1.0"?>
+  static readonly development = `<?xml version="1.0"?>
+  <Preset>
   <PresetName>Development</PresetName>
-  <Relevant>
+  <Required>
     <add key="DevelopmentUserLogin" value="DEFENDERI0061@yopmail.com" />
     <add key="IsInDevelopment" value="true" />
-  </Relevant>
-  `;
+  </Required>
+  </Preset>`;
 
-  static readonly login = `
-  <?xml version="1.0"?>
+  static readonly login = `<?xml version="1.0"?>
+  <Preset>
   <PresetName>Login</PresetName>
-  <Relevant>
+  <Required>
     <add key="DevelopmentUserLogin" value="DEFENDERI0061@yopmail.com" />
-  </Relevant>
-  `;
+  </Required>
+  </Preset>`;
 
-  static readonly developmentWithout = `
-  <?xml version="1.0"?>
+  static readonly developmentWithout = `<?xml version="1.0"?>
+  <Preset>
   <PresetName>NoValues</PresetName>
-  <Relevant>
+  <Required>
     <add key="DevelopmentUserLogin" value="" />
     <add key="IsInDevelopment" value="" />
-  </Relevant>`;
+  </Required>
+  </Preset>`;
 
-  static editable = `
-  <?xml version="1.0"?>
+  static editable = `<?xml version="1.0"?>
+  <Preset>
   <PresetName>Editable</PresetName>
-  <Relevant>
+  <Required>
     <add key="DevelopmentUserLogin" value="" />
     <add key="IsInDevelopment" value="" />
-  </Relevant>`;
+  </Required>
+  </Preset>`;
 
   static presetList = [
     PresetExamples.development,

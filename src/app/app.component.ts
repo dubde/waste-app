@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { ElectronService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
+import { PresetsService } from './presets';
+import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,9 +14,13 @@ export class AppComponent {
 
   private appWindowSizes: { width: number, height: number };
 
+  presetsList$: Observable<string[]>;
+
+
   constructor(
     private electronService: ElectronService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private presetsService: PresetsService
   ) {
     this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
@@ -28,6 +35,15 @@ export class AppComponent {
     }
   }
 
+  ngOnInit(): void {
+    this.presetsList$ = this.presetsService.getPresets().pipe(pluck('name'));
+
+    this.presetsService.loadPresets();
+  }
+
+  selectPreset(name: string) {
+    this.presetsService.selectPreset(name);
+  }
 
   onMinimizeButton(): void {
     const appWindow = this.electronService.remote.getCurrentWindow();

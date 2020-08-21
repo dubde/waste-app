@@ -7,8 +7,9 @@
   <span class="example-spacer"></span>
   <button mat-button [matMenuTriggerFor]="belowMenu">Preset</button>
   <mat-menu #belowMenu="matMenu" yPosition="below">
-    <button mat-menu-item>Preset 1</button>
-    <button mat-menu-item>Preset 2</button>
+    <button mat-menu-item *ngFor="let preset of presetsList$ | async"
+      (click)="selectPreset(preset)">{{ preset }}</button>
+    <button mat-menu-item>None</button>
   </mat-menu>
   <button mat-button>
     <mat-icon>save</mat-icon>

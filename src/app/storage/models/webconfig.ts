@@ -1,7 +1,6 @@
 export class WebConfigMock {
   static readonly long =
-    `
-<?xml version="1.0"?>
+    `<?xml version="1.0"?>
 <configuration>
   <configSections>
     <section name="sitecore" type="Sitecore.Configuration.ConfigReader, Sitecore.Kernel" />

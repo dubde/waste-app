@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { WebConfigMock } from './models/webconfig';
+import { StorageService } from '../storage';
+import { PresetsService } from '../presets';
+import { Observable } from 'rxjs';
+import { Preset } from 'app/presets/models';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +17,13 @@ export class HomeComponent implements OnInit {
   allOtherNodes: Element[];
   panelOpenState: boolean;
 
-  constructor(private router: Router) { }
+  selectedPreset$: Observable<Preset>;
+
+  constructor(
+    private router: Router,
+    private storageService: StorageService,
+    private presetsService: PresetsService
+  ) { }
 
   ngOnInit(): void {
     const requestedKeys = [
@@ -22,19 +31,12 @@ export class HomeComponent implements OnInit {
       'IsInDevelopment'
     ];
 
-    const parser = new DOMParser();
-    const serializer = new XMLSerializer();
-    const path = 'C:/inetpub/wwwroot/tcpdevlocal/Website/'
-    // const file = fs.readFileSync(path + 'Web.config', 'utf8');
-    const file = WebConfigMock.long;
-    this.xmlDoc = parser.parseFromString(file, 'text/xml');
+    this.xmlDoc = this.storageService.loadParsedFileToDom();
+
+    this.selectedPreset$ = this.presetsService.getSelectedPreset();
 
     this.requestedNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key')));
     this.allOtherNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => !requestedKeys.includes(e.getAttribute('key')));
-    const webconfig = serializer.serializeToString(this.xmlDoc);
-
-    //  fs.writeFileSync(path + 'Web.config.test', webconfig);
-
   }
 
   loadXmlFile(): void {
