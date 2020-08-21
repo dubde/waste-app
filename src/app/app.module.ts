@@ -31,6 +31,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
+import { PresetsModule } from './presets/presets.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -53,6 +56,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MatFormFieldModule,
     MatExpansionModule,
     MatIconModule,
+    MatMenuModule,
+    MatSelectModule,
     CoreModule,
     SharedModule,
     HomeModule,
@@ -64,7 +69,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    PresetsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

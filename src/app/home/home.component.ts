@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as fs from 'fs';
+import { WebConfigMock } from './models/webconfig';
 
 @Component({
   selector: 'app-home',
@@ -26,15 +26,7 @@ export class HomeComponent implements OnInit {
     const serializer = new XMLSerializer();
     const path = 'C:/inetpub/wwwroot/tcpdevlocal/Website/'
     // const file = fs.readFileSync(path + 'Web.config', 'utf8');
-    const file = `
-    <appSettings>
-      <add key="DevelopmentUserLogin" value="DEFENDERI0061@yopmail.com" />
-      <add key="IsInDevelopment" value="true" />
-      <add key="" value="" />
-      <add key="Login" value="https://subdomain.apigee.net/forgerock/oauth/v1/login" />
-      <add key="Authentication" value="https://subdomain.apigee.net/forgerock/oauth/v1/user/{0}/passcode?consumerId={1}" />
-    </appSettings>
-    `;
+    const file = WebConfigMock.long;
     this.xmlDoc = parser.parseFromString(file, 'text/xml');
 
     this.requestedNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key')));
