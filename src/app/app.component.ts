@@ -45,6 +45,10 @@ export class AppComponent {
     this.presetsService.selectPreset(name);
   }
 
+  loadWebConfigChange(event) {
+    console.log(event);
+  }
+
   onMinimizeButton(): void {
     const appWindow = this.electronService.remote.getCurrentWindow();
     appWindow.minimize();

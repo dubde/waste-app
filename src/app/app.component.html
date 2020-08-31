@@ -5,6 +5,8 @@
   </button>
   <span>Waste</span>
   <span class="example-spacer"></span>
+  <input #webConfigInput hidden="true" type="file" onclick="this.value=null" (change)="loadWebConfigChange($event)" accept=".config"/>
+  <button mat-flat-button color="primary" (click)="webConfigInput.click()">Load WebConfig</button>
   <button mat-button [matMenuTriggerFor]="belowMenu">Preset</button>
   <mat-menu #belowMenu="matMenu" yPosition="below">
     <button mat-menu-item *ngFor="let preset of presetsList$ | async"
