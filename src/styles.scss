@@ -1,4 +1,4 @@
-@import "~@angular/material/prebuilt-themes/purple-green.css";
+@import '~@angular/material/prebuilt-themes/purple-green.css';
 
 html,
 body {
@@ -12,4 +12,5 @@ body {
 body {
   background: #303030;
   color: white;
+  overflow: hidden;
 }
