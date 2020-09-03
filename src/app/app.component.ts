@@ -5,6 +5,7 @@ import { AppConfig } from '../environments/environment';
 import { PresetsService } from './presets';
 import { Observable } from 'rxjs';
 import { pluck } from 'rxjs/operators';
+import { StorageService } from './storage';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,7 +21,8 @@ export class AppComponent {
   constructor(
     private electronService: ElectronService,
     private translate: TranslateService,
-    private presetsService: PresetsService
+    private presetsService: PresetsService,
+    private storageService: StorageService
   ) {
     this.translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
@@ -46,7 +48,8 @@ export class AppComponent {
   }
 
   loadWebConfigChange(event) {
-    console.log(event);
+    const file = event.target.files[0] as File;
+    this.storageService.loadFileToDom(file);
   }
 
   onMinimizeButton(): void {

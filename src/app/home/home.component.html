@@ -8,7 +8,7 @@
       </mat-expansion-panel-header>
 
       <table class="example-full-width" cellspacing="0">
-        <tr *ngFor="let node of requestedNodes">
+        <tr *ngFor="let node of (requestedNodes$ | async)">
           <td>
             <mat-form-field class="example-full-width">
               <mat-label>Key</mat-label>
@@ -34,7 +34,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <table class="example-full-width" cellspacing="0">
-        <tr *ngFor="let node of allOtherNodes">
+        <tr *ngFor="let node of (allOtherNodes$ | async)">
           <td>
             <mat-form-field class="example-full-width">
               <mat-label>Key</mat-label>

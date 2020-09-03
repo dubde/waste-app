@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageService } from '../storage';
 import { PresetsService } from '../presets';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Preset } from 'app/presets/models';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -12,9 +13,10 @@ import { Preset } from 'app/presets/models';
 })
 export class HomeComponent implements OnInit {
 
-  private xmlDoc: Document;
-  requestedNodes: Element[];
-  allOtherNodes: Element[];
+  private subscriptions = new Subscription();
+  private xmlDoc$: Observable<Document>;
+  requestedNodes$: Observable<Element[]>;
+  allOtherNodes$: Observable<Element[]>;
   panelOpenState: boolean;
 
   selectedPreset$: Observable<Preset>;
@@ -31,12 +33,17 @@ export class HomeComponent implements OnInit {
       'IsInDevelopment'
     ];
 
-    this.xmlDoc = this.storageService.loadParsedFileToDom();
+    this.xmlDoc$ = this.storageService.getDocumentFile().pipe(filter(doc => doc !== null));
 
     this.selectedPreset$ = this.presetsService.getSelectedPreset();
 
-    this.requestedNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key')));
-    this.allOtherNodes = Object.values(this.xmlDoc.getElementsByTagName('add')).filter((e: Element) => !requestedKeys.includes(e.getAttribute('key')));
+    this.requestedNodes$ = this.xmlDoc$.pipe(
+      map((xmlDoc) => Object.values(xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key'))))
+    );
+
+    this.allOtherNodes$ = this.xmlDoc$.pipe(
+      map((xmlDoc) => Object.values(xmlDoc.getElementsByTagName('add')).filter((e: Element) => !requestedKeys.includes(e.getAttribute('key'))))
+    );
   }
 
   loadXmlFile(): void {

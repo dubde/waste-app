@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 //import * as fs from 'fs';
 
 import { WebConfigMock } from '../models/webconfig';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +13,30 @@ export class StorageService {
   private serializer = new XMLSerializer();
   private parser = new DOMParser();
 
+  private _fileParsedSubject = new BehaviorSubject<Document>(null);
+
   constructor() { }
 
-  loadParsedFileToDom(path?: string): Document {
-    // this.localPath = path ?? 'C:/inetpub/wwwroot/tcpdevlocal/Website/';
-    // const file = fs.readFileSync(this.localPath + 'Web.config', 'utf8');
+  loadFileToDom(file: File): Observable<Document> {
+    const fileReader = new FileReader();
 
-    const file = WebConfigMock.long;
-    return this.parser.parseFromString(file, 'text/xml');
+    fileReader.onload = (e: ProgressEvent<FileReader>) => {
+      const data: any = e.target.result;
+
+      const parser = new DOMParser();
+
+      const fileParsed = parser.parseFromString(data, 'text/xml');
+      console.log(data, fileParsed);
+      this._fileParsedSubject.next(fileParsed);
+    };
+
+    fileReader.readAsText(file);
+
+    return this._fileParsedSubject.asObservable();
+  }
+
+  getDocumentFile(): Observable<Document> {
+    return this._fileParsedSubject.asObservable();
   }
 
   watchFile() { }
