@@ -5,6 +5,7 @@ import { PresetExamples } from '../models/presets-examples';
 import { StorageService } from '../../storage';
 import { Preset } from '../models';
 import { parse } from 'path';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -55,29 +56,34 @@ export class PresetsService {
     return { name, required } as Preset;
   }
 
-  extractRequiredValues(fullDocument: Document, preset: Preset): Element[] {
-    return Object.values(fullDocument.children).filter(element => {
+  filterRequiredNodes(documentToFilter: Document): Observable<Element[]> {
+    return this.getSelectedPreset().pipe(map((preset) => this.extractRequiredValues(documentToFilter, preset)), tap(console.log));
+  }
 
-      const match = {
-        tag: element.tagName,
-        key: element.getAttribute('key')
-      }
+  filterOptionalNodes(documentToFilter: Document): Observable<Element[]> {
+    return this.getSelectedPreset().pipe(map((preset) => this.extractNotRequiredValues(documentToFilter, preset)), tap(console.log));
+  }
 
-      return preset.required.includes(match)
+  private extractRequiredValues(fullDocument: Document, preset: Preset): Element[] {
+
+    return preset.required.flatMap(({ tag, key, value }) => {
+      const elements = fullDocument.getElementsByTagName(tag);
+      return Object.values(elements).filter((element) => {
+        if (element.getAttribute('key') === key) {
+          if (!!value) {
+            element.setAttribute('value', value);
+          }
+          return true;
+        } else { return false; }
+      })
     });
   }
 
-  extractNotRequiredValues(fullDocument: Document, preset: Preset): Element[] {
-    return Object.values(fullDocument.children).filter(element => {
-
-      const match = {
-        tag: element.tagName,
-        key: element.getAttribute('key')
-      }
-
-      return !preset.required.includes(match)
-    });
+  private extractNotRequiredValues(fullDocument: Document, preset: Preset): Element[] {
+    const elements = fullDocument.children;
+    return Object.values(elements).filter((element) => {
+      const match = { tag: element.tagName, key: element.getAttribute('key') }
+      return !preset.required.includes(match);
+    })
   }
-
-
 }

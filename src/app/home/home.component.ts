@@ -4,7 +4,7 @@ import { StorageService } from '../storage';
 import { PresetsService } from '../presets';
 import { Observable, Subscription } from 'rxjs';
 import { Preset } from 'app/presets/models';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -33,17 +33,27 @@ export class HomeComponent implements OnInit {
       'IsInDevelopment'
     ];
 
+    this.presetsService.loadPresets();
+
+    this.presetsService.selectPreset('Development');
+
     this.xmlDoc$ = this.storageService.getDocumentFile().pipe(filter(doc => doc !== null));
 
     this.selectedPreset$ = this.presetsService.getSelectedPreset();
 
-    this.requestedNodes$ = this.xmlDoc$.pipe(
-      map((xmlDoc) => Object.values(xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key'))))
-    );
+    this.selectedPreset$.subscribe((p) => console.log(p));
 
-    this.allOtherNodes$ = this.xmlDoc$.pipe(
-      map((xmlDoc) => Object.values(xmlDoc.getElementsByTagName('add')).filter((e: Element) => !requestedKeys.includes(e.getAttribute('key'))))
-    );
+    this.requestedNodes$ = this.xmlDoc$.pipe(switchMap((document) => this.presetsService.filterRequiredNodes(document)));
+
+    this.allOtherNodes$ = this.xmlDoc$.pipe(switchMap((document) => this.presetsService.filterOptionalNodes(document)));
+
+    // this.requestedNodes$ = this.xmlDoc$.pipe(
+    //   map((xmlDoc) => Object.values(xmlDoc.getElementsByTagName('add')).filter((e: Element) => requestedKeys.includes(e.getAttribute('key'))))
+    // );
+
+    // this.allOtherNodes$ = this.xmlDoc$.pipe(
+    //   map((xmlDoc) => Object.values(xmlDoc.getElementsByTagName('add')).filter((e: Element) => !requestedKeys.includes(e.getAttribute('key'))))
+    // );
   }
 
   loadXmlFile(): void {
