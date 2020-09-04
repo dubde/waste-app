@@ -57,11 +57,11 @@ export class PresetsService {
   }
 
   filterRequiredNodes(documentToFilter: Document): Observable<Element[]> {
-    return this.getSelectedPreset().pipe(map((preset) => this.extractRequiredValues(documentToFilter, preset)), tap(console.log));
+    return this.getSelectedPreset().pipe(map((preset) => this.extractRequiredValues(documentToFilter, preset)));
   }
 
   filterOptionalNodes(documentToFilter: Document): Observable<Element[]> {
-    return this.getSelectedPreset().pipe(map((preset) => this.extractNotRequiredValues(documentToFilter, preset)), tap(console.log));
+    return this.getSelectedPreset().pipe(map((preset) => this.extractNotRequiredValues(documentToFilter, preset)));
   }
 
   private extractRequiredValues(fullDocument: Document, preset: Preset): Element[] {
@@ -80,10 +80,12 @@ export class PresetsService {
   }
 
   private extractNotRequiredValues(fullDocument: Document, preset: Preset): Element[] {
-    const elements = fullDocument.children;
-    return Object.values(elements).filter((element) => {
-      const match = { tag: element.tagName, key: element.getAttribute('key') }
-      return !preset.required.includes(match);
-    })
+    return preset.required.flatMap(({ tag, key, value }) => {
+      const elements = fullDocument.getElementsByTagName(tag);
+      return Object.values(elements).filter((element) => {
+        const elementKey = element.getAttribute('key');
+        return !!elementKey && elementKey !== key;
+      })
+    });
   }
 }

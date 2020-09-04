@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
 import { PresetsService } from './presets';
 import { Observable } from 'rxjs';
-import { pluck } from 'rxjs/operators';
+import { pluck, map, tap } from 'rxjs/operators';
 import { StorageService } from './storage';
 @Component({
   selector: 'app-root',
@@ -38,7 +38,7 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    this.presetsList$ = this.presetsService.getPresets().pipe(pluck('name'));
+    this.presetsList$ = this.presetsService.getPresets().pipe(map(p => p.map(p => p.name)));
 
     this.presetsService.loadPresets();
   }
